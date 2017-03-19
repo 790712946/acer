@@ -26,7 +26,7 @@ import javax.sql.DataSource;
  * Created by jianghong on 2017/3/19.
  */
 @Configuration
-@EnableBatchProcessing
+@EnableBatchProcessing//开启批处理模式
 public class BatchConfiguration {
     /**
      * 任务创建工厂

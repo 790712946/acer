@@ -28,26 +28,25 @@ public class JobCompletionNotificationListener extends JobExecutionListenerSuppo
     }
 
     /**
-     *  任务结束后，可以检查任务执行结果
+     * 任务结束后，可以检查任务执行结果
+     *
      * @param jobExecution
      */
     @Override
     public void afterJob(JobExecution jobExecution) {
         if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
             log.info("!!! JOB FINISHED! Time to verify the results");
-
+            //从数据库中查询数据（JDBC方式）
             List<Person> results = jdbcTemplate.query("SELECT first_name, last_name FROM people", (rs, row) ->
                     new Person(rs.getString(1), rs.getString(2)));
-
-            for (Person person : results) {
-                log.info("Found <" + person + "> in the database.");
-            }
-
+            //遍历查询结果
+            results.forEach(person -> log.info("Found <" + person + "> in the database."));
         }
     }
+
     //任务开始前，可以做任务预处理
     @Override
-    public void beforeJob(JobExecution jobExecution){
+    public void beforeJob(JobExecution jobExecution) {
         log.info("JOB Start.");
     }
 }
