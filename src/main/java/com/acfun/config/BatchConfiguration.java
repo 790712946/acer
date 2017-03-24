@@ -109,7 +109,7 @@ public class BatchConfiguration {
                 .listener(listener)
                 //设置任务执行的步骤（具体内容），可以添加多个步骤
                 .flow(step1())
-                .next(step2())//通过调用.next调用下一个步骤
+//                .next(step2())//通过调用.next调用下一个步骤
                 //构建JOB结束
                 .end()
                 //构建JOB
@@ -133,15 +133,15 @@ public class BatchConfiguration {
                 .build();
         return step;
     }
-    @Bean
-    public Step step2(){
-        Step step=stepBuilderFactory.get("step2")
-                .<Person,Person>chunk(10)
-                .reader(reader())
-                .processor(processor())
-                .writer(writer())
-                .build();
-        return step;
-    }
+//    @Bean
+//    public Step step2(){
+//        Step step=stepBuilderFactory.get("step2")
+//                .<Person,Person>chunk(10)
+//                .reader(reader())
+//                .processor(processor())
+//                .writer(writer())
+//                .build();
+//        return step;
+//    }
     // end::jobstep[]
 }
