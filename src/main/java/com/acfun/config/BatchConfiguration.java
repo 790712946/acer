@@ -9,6 +9,8 @@ import org.springframework.batch.core.configuration.annotation.EnableBatchProces
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.core.repository.support.JobRepositoryFactoryBean;
+import org.springframework.batch.core.step.builder.FlowStepBuilder;
 import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -32,17 +34,17 @@ public class BatchConfiguration {
      * 任务创建工厂
      */
     @Autowired
-    public JobBuilderFactory jobBuilderFactory;
+    private JobBuilderFactory jobBuilderFactory;
     /**
      * 任务步骤工厂
      */
     @Autowired
-    public StepBuilderFactory stepBuilderFactory;
+    private StepBuilderFactory stepBuilderFactory;
     /**
      * 数据源
      */
     @Autowired
-    public DataSource dataSource;
+    private DataSource dataSource;
 
     // tag::readerwriterprocessor[]
 
@@ -133,15 +135,4 @@ public class BatchConfiguration {
                 .build();
         return step;
     }
-//    @Bean
-//    public Step step2(){
-//        Step step=stepBuilderFactory.get("step2")
-//                .<Person,Person>chunk(10)
-//                .reader(reader())
-//                .processor(processor())
-//                .writer(writer())
-//                .build();
-//        return step;
-//    }
-    // end::jobstep[]
 }
