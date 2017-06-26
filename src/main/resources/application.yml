@@ -24,7 +24,7 @@ spring:
     job:
       enabled: false
   schema:
-#debug: true
+debug: true
 management:
   security:
     enabled: false
