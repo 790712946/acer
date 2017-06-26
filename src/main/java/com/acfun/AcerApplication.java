@@ -8,7 +8,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
 @EnableScheduling
-@ServletComponentScan
 public class AcerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(AcerApplication.class, args);

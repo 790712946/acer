@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
 import javax.sql.DataSource;
 
@@ -57,6 +58,7 @@ public class BatchConfiguration {
     public FlatFileItemReader<Person> reader() {
         //构造一个FlatFileItemReader用来读取和暂存文件数据
         FlatFileItemReader<Person> reader = new FlatFileItemReader<Person>();
+        reader.setSaveState(true);
         //指定文件读取的路径
         reader.setResource(new ClassPathResource("sample-data.csv"));
         //按行读取数据
@@ -121,6 +123,7 @@ public class BatchConfiguration {
 
     @Bean
     public Step step1() {
+        //每一个步骤都可以添加对应的监听器对任务的每个环节进行监控
         //通过方法名来构建一个StepBuilder（虽然可以步骤名和bean 名字可以不一致，但是最好取一样的名字）
         Step step=stepBuilderFactory.get("step1")
                 //设置缓冲区大小，每次处理多少数据。
@@ -129,8 +132,21 @@ public class BatchConfiguration {
                 .reader(reader())
                 //设置数据读入后的处理方式
                 .processor(processor())
-                //把数据按照我们的方式写入
+                //设置数据落地
                 .writer(writer())
+                .faultTolerant()
+                //发生异常重试
+                .retry(Exception.class)
+                //每条记录重试一次
+                .retryLimit(1)
+                //重试后还发生异常跳过
+                .skip(Exception.class)
+                //设置总共可以跳过的次数
+                .skipLimit(200)
+                //设置并发方式执行
+//                .taskExecutor(new SimpleAsyncTaskExecutor())
+//                //设置并发任务数
+//                .throttleLimit(10)
                 //步骤构建完成
                 .build();
         return step;

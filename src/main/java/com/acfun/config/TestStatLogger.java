@@ -13,7 +13,7 @@ import java.util.Properties;
 public class TestStatLogger extends DruidDataSourceStatLoggerAdapter implements DruidDataSourceStatLogger {
     @Override
     public void log(DruidDataSourceStatValue statValue) {
-        System.out.println("this is"+statValue.getName());
+        //TODO
     }
 
     @Override

@@ -20,12 +20,13 @@ public class JobService implements TestInterface<String>{
     private JobLauncher jobLauncher;
     @Autowired
     private Job importUserJob;
+    private static final int fixRate=5000;
     //每隔五秒执行一次
-//    @Scheduled(fixedRate=5000)
+//    @Scheduled(fixedRate=JobService.fixRate)
     public void executeJob() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
         //以时间戳标识任务
         JobParameters jobParameter=new JobParametersBuilder().addLong("time",System.currentTimeMillis()).toJobParameters();
-        JobExecution jobExecution=jobLauncher.run(importUserJob,jobParameter);
+        jobLauncher.run(importUserJob,jobParameter);
     }
 
     @Override
